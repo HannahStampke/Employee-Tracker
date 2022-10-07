@@ -58,3 +58,81 @@ function options() {
             }
         })
 };
+
+// Department db
+function viewDepartments() {
+    var query = 'SELECT * FROM department';
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table('All departments:', res);
+        options();
+    })
+};
+
+function viewRoles() {
+    var query = 'SELECT * FROM role';
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table('All roles:', res);
+        options();
+    })
+};
+
+function viewEmployees() {
+    var query = 'SELECT * FROM employee';
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table('All employees:', res);
+        options();
+    })
+}
+
+function addDepartment() {
+    connection.query('SELECT * FROM department', function(err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: 'newDepartment',
+                type: 'input',
+                message: 'What department are you adding?' 
+            }]).then(function(answer) {
+                connection.query(
+                    'INSERT INTO department SET ?', {
+                        name: answer.newDepartment
+                    });
+                var query = 'SELECT * FROM department';
+                connection.query(query, function(err, res) {
+                    if (err) throw err;
+                    console.log('The department has been added!');
+                    console.table('All departments:', res);
+                    options();
+                })
+            })
+    })
+};
+
+function addRole() {
+    connection.query('SELECT * FROM department', function(err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt ([{
+                name: 'new-role',
+                type: 'input',
+                message: 'What role are you adding?'
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'Roles annual salary?'
+            },
+            {
+                name: 'Department',
+                type: 'list',
+                choices: function() {
+                    var departmentArray = [];
+                    
+                }
+            }
+        ])
+    })
+}
